@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Portal - ShopHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-top {
+            background: rgba(0,0,0,0.2);
+            padding: 8px 0;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 5%;
+        }
+
+        .page-section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            background: white;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-bar button {
+            padding: 1rem 2rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .search-bar button:hover {
+            background: #5568d3;
+        }
+
+        /* Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: #667eea;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-add-cart, .btn-wishlist {
+            flex: 1;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-add-cart {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-add-cart:hover {
+            background: #5568d3;
+        }
+
+        .btn-wishlist {
+            background: #f8f9fa;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-wishlist:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Forms */
+        .form-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input.error {
+            border-color: #e74c3c;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #777;
+        }
+
+        .form-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Lists (Orders, Wishlist) */
+        .list-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .list-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 1rem;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .list-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        .item-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .item-meta {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .item-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-remove {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-remove:hover {
+            background: #c0392b;
+        }
+
+        /* Reviews Section */
+        .review-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .review-rating {
+            color: #f39c12;
+            font-size: 1.2rem;
+        }
+
+        .review-text {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        /* About Us */
+        .about-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .about-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+
+        .about-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-box {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            transition: all 0.3s;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        /* Customer Care */
+        .care-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .care-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .care-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .care-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .care-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .care-description {
+            color: #777;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 5%;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding: 1.5rem 0;
+            background: rgba(0,0,0,0.2);
+            margin-top: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .copyright a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+
+            .list-item {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .badge-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .badge-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .report-form select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-top">
+            🎉 Free Shipping on Orders Above $50! | 24/7 Customer Support Available
+        </div>
+        <nav>
+            <div class="logo">🛒 ShopHub</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li><a href="#" onclick="showPage('products')">Products</a></li>
+                <li><a href="#" onclick="showPage('contact')">Contact Us</a></li>
+                <li><a href="#" onclick="showPage('about')">About Us</a></li>
+                <li><a href="#" onclick="showPage('orders')">My Orders</a></li>
+                <li><a href="#" onclick="showPage('wishlist')">Wishlist</a></li>
+                <li><a href="#" onclick="showPage('reviews')">Reviews</a></li>
+                <li><a href="#" onclick="showPage('care')">Support</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <button class="btn btn-secondary" onclick="showPage('login')">Login</button>
+                <button class="btn btn-primary" onclick="showPage('register')">Sign Up</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Page -->
+        <div id="home" class="page-section active">
+            <div class="hero">
+                <h1>Welcome to ShopHub</h1>
+                <p>Your One-Stop Destination for Quality Products at Amazing Prices</p>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search for products, brands, and more..." />
+                    <button>Search</button>
+                </div>
+            </div>
+
+            <h2 style="margin-bottom: 1rem; color: #2c3e50;">Featured Products</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" alt="Headphones" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Premium Wireless Headphones</div>
+                        <div class="product-price">$129.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart('Premium Wireless Headphones', 129.99)">Add to Cart</button>
+                            <button class="btn-wishlist" onclick="addToWishlist('Premium Wireless Headphones', 129.99)">♥</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400" alt="Watch" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Smart Watch Series 7</div>
+                        <div class="product-price">$399.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart('Smart Watch Series 7', 399.99)">Add to Cart</button>
+                            <button class="btn-wishlist" onclick="addToWishlist('Smart Watch Series 7', 399.99)">♥</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400" alt="Sunglasses" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Designer Sunglasses</div>
+                        <div class="product-price">$89.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart('Designer Sunglasses', 89.99)">Add to Cart</button>
+                            <button class="btn-wishlist" onclick="addToWishlist('Designer Sunglasses', 89.99)">♥</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400" alt="Sneakers" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Running Sneakers Pro</div>
+                        <div class="product-price">$159.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart('Running Sneakers Pro', 159.99)">Add to Cart</button>
+                            <button class="btn-wishlist" onclick="addToWishlist('Running Sneakers Pro', 159.99)">♥</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400" alt="Backpack" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Travel Backpack Elite</div>
+                        <div class="product-price">$79.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart('Travel Backpack Elite', 79.99)">Add to Cart</button>
+                            <button class="btn-wishlist" onclick="addToWishlist('Travel Backpack Elite', 79.99)">♥</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400" alt="Perfume" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Luxury Perfume Collection</div>
+                        <div class="product-price">$119.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart('Luxury Perfume Collection', 119.99)">Add to Cart</button>
+                            <button class="btn-wishlist" onclick="addToWishlist('Luxury Perfume Collection', 119.99)">♥</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Page -->
+        <div id="products" class="page-section">
+            <h2 style="margin-bottom: 2rem; color: #2c3e50;">All Products</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" alt="Headphones" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Premium Wireless Headphones</div>
+                        <div class="product-price">$129.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart('Premium Wireless Headphones', 129.99)">Add to Cart</button>
+                            <button class="btn-wishlist" onclick="addToWishlist('Premium Wireless Headphones', 129.99)">♥</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400" alt="Watch" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Smart Watch Series 7</div>
+                        <div class="product-price">$399.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart('Smart Watch Series 7', 399.99)">Add to Cart</button>
+                            <button class="btn-wishlist" onclick="addToWishlist('Smart Watch Series 7', 399.99)">♥</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400" alt="Sunglasses" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Designer Sunglasses</div>
+                        <div class="product-price">$89.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart('Designer Sunglasses', 89.99)">Add to Cart</button>
+                            <button class="btn-wishlist" onclick="addToWishlist('Designer Sunglasses', 89.99)">♥</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400" alt="Sneakers" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Running Sneakers Pro</div>
+                        <div class="product-price">$159.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart('Running Sneakers Pro', 159.99)">Add to Cart</button>
+                            <button class="btn-wishlist" onclick="addToWishlist('Running Sneakers Pro', 159.99)">♥</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400" alt="Backpack" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Travel Backpack Elite</div>
+                        <div class="product-price">$79.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart('Travel Backpack Elite', 79.99)">Add to Cart</button>
+                            <button class="btn-wishlist" onclick="addToWishlist('Travel Backpack Elite', 79.99)">♥</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400" alt="Perfume" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Luxury Perfume Collection</div>
+                        <div class="product-price">$119.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart('Luxury Perfume Collection', 119.99)">Add to Cart</button>
+                            <button class="btn-wishlist" onclick="addToWishlist('Luxury Perfume Collection', 119.99)">♥</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400" alt="Camera" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Professional DSLR Camera</div>
+                        <div class="product-price">$899.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart('Professional DSLR Camera', 899.99)">Add to Cart</button>
+                            <button class="btn-wishlist" onclick="addToWishlist('Professional DSLR Camera', 899.99)">♥</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400" alt="Laptop" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Ultra Thin Laptop Pro</div>
+                        <div class="product-price">$1299.99</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart('Ultra Thin Laptop Pro', 1299.99)">Add to Cart</button>
+                            <button class="btn-wishlist" onclick="addToWishlist('Ultra Thin Laptop Pro', 1299.99)">♥</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="register" class="page-section">
+            <div class="form-container">
+                <h2 class="form-title">Create Your Account</h2>
+                <form id="registerForm" onsubmit="return validateRegistration(event)">
+                    <div class="form-group">
+                        <label for="regName">Full Name *</label>
+                        <input type="text" id="regName" name="regName" required>
+                        <div class="error-message" id="regNameError">Please enter your full name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regEmail">Email Address *</label>
+                        <input type="email" id="regEmail" name="regEmail" required>
+                        <div class="error-message" id="regEmailError">Please enter a valid email address</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPhone">Phone Number *</label>
+                        <input type="tel" id="regPhone" name="regPhone" required>
+                        <div class="error-message" id="regPhoneError">Please enter a valid 10-digit phone number</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPassword">Password *</label>
+                        <input type="password" id="regPassword" name="regPassword" required>
+                        <div class="error-message" id="regPasswordError">Password must be at least 8 characters with uppercase, lowercase, and number</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regConfirmPassword">Confirm Password *</label>
+                        <input type="password" id="regConfirmPassword" name="regConfirmPassword" required>
+                        <div class="error-message" id="regConfirmPasswordError">Passwords do not match</div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Create Account</button>
+
+                    <div class="form-footer">
+                        Already have an account? <a href="#" onclick="showPage('login')">Login here</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login" class="page-section">
+            <div class="form-container">
+                <h2 class="form-title">Login to Your Account</h2>
+                <form id="loginForm" onsubmit="return validateLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address *</label>
+                        <input type="email" id="loginEmail" name="loginEmail" required>
+                        <div class="error-message" id="loginEmailError">Please enter a valid email address</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Password *</label>
+                        <input type="password" id="loginPassword" name="loginPassword" required>
+                        <div class="error-message" id="loginPasswordError">Password is required</div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Login</button>
+
+                    <div class="form-footer">
+                        Do not have an account? <a href="#" onclick="showPage('register')">Sign up here</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Contact Us -->
+        <div id="contact" class="page-section">
+            <div class="form-container">
+                <h2 class="form-title">Get In Touch</h2>
+                <form id="contactForm" onsubmit="return validateContact(event)">
+                    <div class="form-group">
+                        <label for="contactName">Your Name *</label>
+                        <input type="text" id="contactName" name="contactName" required>
+                        <div class="error-message" id="contactNameError">Please enter your name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactEmail">Email Address *</label>
+                        <input type="email" id="contactEmail" name="contactEmail" required>
+                        <div class="error-message" id="contactEmailError">Please enter a valid email address</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactSubject">Subject *</label>
+                        <input type="text" id="contactSubject" name="contactSubject" required>
+                        <div class="error-message" id="contactSubjectError">Please enter a subject</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactMessage">Message *</label>
+                        <textarea id="contactMessage" name="contactMessage" rows="5" required></textarea>
+                        <div class="error-message" id="contactMessageError">Please enter your message</div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- About Us -->
+        <div id="about" class="page-section">
+            <div class="about-section">
+                <h2>About ShopHub</h2>
+                <p>Welcome to ShopHub, your trusted online shopping destination. We are dedicated to bringing you the best products at competitive prices with exceptional customer service.</p>
+                <p>Founded in 2020, ShopHub has grown to become one of the most reliable e-commerce platforms, serving millions of customers worldwide. Our mission is to make online shopping simple, safe, and enjoyable for everyone.</p>
+
+                <div class="about-features">
+                    <div class="feature-box">
+                        <div class="feature-icon">🚚</div>
+                        <div class="feature-title">Fast Delivery</div>
+                        <p>Get your products delivered within 2-5 business days with free shipping on orders above $50.</p>
+                    </div>
+
+                    <div class="feature-box">
+                        <div class="feature-icon">🔒</div>
+                        <div class="feature-title">Secure Payments</div>
+                        <p>Shop with confidence using our encrypted payment gateway that protects your information.</p>
+                    </div>
+
+                    <div class="feature-box">
+                        <div class="feature-icon">⭐</div>
+                        <div class="feature-title">Quality Products</div>
+                        <p>We carefully curate every product to ensure you receive only the best quality items.</p>
+                    </div>
+
+                    <div class="feature-box">
+                        <div class="feature-icon">💬</div>
+                        <div class="feature-title">24/7 Support</div>
+                        <p>Our dedicated customer support team is always ready to assist you with any questions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders List -->
+        <div id="orders" class="page-section">
+            <div class="list-container">
+                <h2 class="list-title">My Orders</h2>
+                <div id="ordersList">
+                    <div class="list-item">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100" alt="Order" class="item-image">
+                        <div class="item-details">
+                            <div class="item-name">Premium Wireless Headphones</div>
+                            <div class="item-meta">Order #ORD-2024-001 | Placed on Jan 15, 2024</div>
+                            <div class="item-meta">
+                                Status: <span class="badge badge-success">Delivered</span>
+                            </div>
+                        </div>
+                        <div class="item-price">$129.99</div>
+                        <div class="item-actions">
+                            <button class="btn-sm" style="background: #667eea; color: white;">Track Order</button>
+                            <button class="btn-sm" style="background: #27ae60; color: white;">Reorder</button>
+                        </div>
+                    </div>
+
+                    <div class="list-item">
+                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100" alt="Order" class="item-image">
+                        <div class="item-details">
+                            <div class="item-name">Smart Watch Series 7</div>
+                            <div class="item-meta">Order #ORD-2024-002 | Placed on Jan 18, 2024</div>
+                            <div class="item-meta">
+                                Status: <span class="badge badge-warning">In Transit</span>
+                            </div>
+                        </div>
+                        <div class="item-price">$399.99</div>
+                        <div class="item-actions">
+                            <button class="btn-sm" style="background: #667eea; color: white;">Track Order</button>
+                        </div>
+                    </div>
+
+                    <div class="list-item">
+                        <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=100" alt="Order" class="item-image">
+                        <div class="item-details">
+                            <div class="item-name">Designer Sunglasses</div>
+                            <div class="item-meta">Order #ORD-2024-003 | Placed on Jan 20, 2024</div>
+                            <div class="item-meta">
+                                Status: <span class="badge badge-warning">Processing</span>
+                            </div>
+                        </div>
+                        <div class="item-price">$89.99</div>
+                        <div class="item-actions">
+                            <button class="btn-sm btn-remove">Cancel Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wishlist -->
+        <div id="wishlist" class="page-section">
+            <div class="list-container">
+                <h2 class="list-title">My Wishlist</h2>
+                <div id="wishlistItems">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">♥</div>
+                        <h3>Your wishlist is empty</h3>
+                        <p>Add items you love to your wishlist and purchase them later!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews -->
+        <div id="reviews" class="page-section">
+            <div class="list-container">
+                <h2 class="list-title">Customer Reviews & Ratings</h2>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-name">Sarah Johnson</div>
+                        <div class="review-rating">★★★★★</div>
+                    </div>
+                    <div class="review-text">
+                        Absolutely love my new headphones! The sound quality is amazing and they are so comfortable to wear. Shipping was fast and the customer service was excellent. Highly recommend ShopHub!
+                    </div>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-name">Michael Chen</div>
+                        <div class="review-rating">★★★★★</div>
+                    </div>
+                    <div class="review-text">
+                        Great experience shopping here! The products are exactly as described and the prices are very competitive. My smartwatch arrived in perfect condition. Will definitely shop again.
+                    </div>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-name">Emily Rodriguez</div>
+                        <div class="review-rating">★★★★☆</div>
+                    </div>
+                    <div class="review-text">
+                        Good quality products and reasonable prices. The delivery took a bit longer than expected, but the item was well-packaged and worth the wait. Customer support was very helpful when I had questions.
+                    </div>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-name">David Thompson</div>
+                        <div class="review-rating">★★★★★</div>
+                    </div>
+                    <div class="review-text">
+                        Fantastic shopping experience from start to finish! The website is easy to navigate, checkout was smooth, and my order arrived earlier than expected. The sunglasses are high quality and look even better in person.
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 2rem; background: #f8f9fa; border-radius: 10px;">
+                    <h3 style="margin-bottom: 1rem;">Write Your Review</h3>
+                    <form id="reviewForm" onsubmit="return submitReview(event)">
+                        <div class="form-group">
+                            <label>Your Name</label>
+                            <input type="text" id="reviewName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Rating</label>
+                            <select id="reviewRating" required>
+                                <option value="">Select rating</option>
+                                <option value="5">★★★★★ Excellent</option>
+                                <option value="4">★★★★☆ Very Good</option>
+                                <option value="3">★★★☆☆ Good</option>
+                                <option value="2">★★☆☆☆ Fair</option>
+                                <option value="1">★☆☆☆☆ Poor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Review</label>
+                            <textarea id="reviewText" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Care -->
+        <div id="care" class="page-section">
+            <div class="list-container">
+                <h2 class="list-title">Customer Care & Support</h2>
+                <p style="margin-bottom: 2rem; color: #777;">We are here to help you with any questions or concerns.</p>
+
+                <div class="care-options">
+                    <div class="care-card">
+                        <div class="care-icon">📞</div>
+                        <div class="care-title">Call Us</div>
+                        <div class="care-description">Speak with our support team</div>
+                        <strong>1-800-SHOPHUB</strong>
+                        <div style="margin-top: 0.5rem; color: #777;">Mon-Fri: 9AM-8PM EST</div>
+                    </div>
+
+                    <div class="care-card">
+                        <div class="care-icon">💬</div>
+                        <div class="care-title">Live Chat</div>
+                        <div class="care-description">Chat with us in real-time</div>
+                        <button class="btn-sm" style="background: #667eea; color: white; margin-top: 1rem;">Start Chat</button>
+                    </div>
+
+                    <div class="care-card">
+                        <div class="care-icon">📧</div>
+                        <div class="care-title">Email Support</div>
+                        <div class="care-description">Send us your queries</div>
+                        <strong>support@shophub.com</strong>
+                        <div style="margin-top: 0.5rem; color: #777;">Response within 24 hours</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem; padding: 2rem; background: #f8f9fa; border-radius: 10px;">
+                    <h3 style="margin-bottom: 1.5rem;">Frequently Asked Questions</h3>
+                    <div style="margin-bottom: 1.5rem;">
+                        <strong style="display: block; margin-bottom: 0.5rem; color: #2c3e50;">How do I track my order?</strong>
+                        <p style="color: #777;">You can track your order by visiting the "My Orders" section and clicking on "Track Order" for the specific order you want to monitor.</p>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <strong style="display: block; margin-bottom: 0.5rem; color: #2c3e50;">What is your return policy?</strong>
+                        <p style="color: #777;">We offer a 30-day return policy for most items. Products must be unused and in their original packaging. Contact our support team to initiate a return.</p>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <strong style="display: block; margin-bottom: 0.5rem; color: #2c3e50;">How long does shipping take?</strong>
+                        <p style="color: #777;">Standard shipping takes 5-7 business days. Express shipping is available and delivers within 2-3 business days. Free shipping is available on orders over $50.</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem; padding: 2rem; background: #f8f9fa; border-radius: 10px;" class="report-form">
+                    <h3 style="margin-bottom: 1.5rem;">Report an Issue</h3>
+                    <form id="reportForm" onsubmit="return submitReport(event)">
+                        <div class="form-group">
+                            <label>Issue Type</label>
+                            <select id="issueType" required>
+                                <option value="">Select issue type</option>
+                                <option value="order">Order Problem</option>
+                                <option value="product">Product Issue</option>
+                                <option value="payment">Payment Issue</option>
+                                <option value="delivery">Delivery Problem</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Order Number (if applicable)</label>
+                            <input type="text" id="issueOrderNumber" placeholder="e.g., ORD-2024-001">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="issueDescription" rows="4" required placeholder="Please describe the issue in detail..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Submit Report</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About ShopHub</h3>
+                <p style="color: #bdc3c7; line-height: 1.8;">Your trusted e-commerce platform for quality products, fast delivery, and exceptional customer service.</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="showPage('home')">Home</a></li>
+                    <li><a href="#" onclick="showPage('products')">Products</a></li>
+                    <li><a href="#" onclick="showPage('about')">About Us</a></li>
+                    <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Customer Service</h3>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="showPage('orders')">My Orders</a></li>
+                    <li><a href="#" onclick="showPage('wishlist')">Wishlist</a></li>
+                    <li><a href="#" onclick="showPage('care')">Help Center</a></li>
+                    <li><a href="#" onclick="showPage('reviews')">Reviews</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <ul class="footer-links">
+                    <li>📧 support@shophub.com</li>
+                    <li>📞 1-800-SHOPHUB</li>
+                    <li>📍 123 Commerce Street, NY</li>
+                    <li>🕒 Mon-Fri: 9AM-8PM EST</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="copyright">
+            AI vibe coded development by <a href="https://biela.dev/" target="_blank" rel="noopener">Biela.dev</a>, powered by <a href="https://teachmecode.ae/" target="_blank" rel="noopener">TeachMeCode® Institute</a>
+        </div>
+    </footer>
+
+    <script>
+        // Page Navigation
+        function showPage(pageId) {
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(section => section.classList.remove('active'));
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Registration Validation
+        function validateRegistration(event) {
+            event.preventDefault();
+            let isValid = true;
+
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+            // Reset error states
+            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
+
+            // Name validation
+            if (name.length < 2) {
+                showError('regName', 'regNameError');
+                isValid = false;
+            }
+
+            // Email validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                showError('regEmail', 'regEmailError');
+                isValid = false;
+            }
+
+            // Phone validation
+            const phonePattern = /^\d{10}$/;
+            if (!phonePattern.test(phone.replace(/\D/g, ''))) {
+                showError('regPhone', 'regPhoneError');
+                isValid = false;
+            }
+
+            // Password validation
+            const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+            if (!passwordPattern.test(password)) {
+                showError('regPassword', 'regPasswordError');
+                isValid = false;
+            }
+
+            // Confirm password validation
+            if (password !== confirmPassword) {
+                showError('regConfirmPassword', 'regConfirmPasswordError');
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert('Registration successful! Welcome to ShopHub.');
+                document.getElementById('registerForm').reset();
+                showPage('login');
+            }
+
+            return false;
+        }
+
+        // Login Validation
+        function validateLogin(event) {
+            event.preventDefault();
+            let isValid = true;
+
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            // Reset error states
+            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
+
+            // Email validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                showError('loginEmail', 'loginEmailError');
+                isValid = false;
+            }
+
+            // Password validation
+            if (password.length < 1) {
+                showError('loginPassword', 'loginPasswordError');
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert('Login successful! Welcome back to ShopHub.');
+                document.getElementById('loginForm').reset();
+                showPage('home');
+            }
+
+            return false;
+        }
+
+        // Contact Form Validation
+        function validateContact(event) {
+            event.preventDefault();
+            let isValid = true;
+
+            const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const subject = document.getElementById('contactSubject').value.trim();
+            const message = document.getElementById('contactMessage').value.trim();
+
+            // Reset error states
+            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('input, textarea').forEach(el => el.classList.remove('error'));
+
+            // Validations
+            if (name.length < 2) {
+                showError('contactName', 'contactNameError');
+                isValid = false;
+            }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                showError('contactEmail', 'contactEmailError');
+                isValid = false;
+            }
+
+            if (subject.length < 5) {
+                showError('contactSubject', 'contactSubjectError');
+                isValid = false;
+            }
+
+            if (message.length < 10) {
+                showError('contactMessage', 'contactMessageError');
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert('Thank you for contacting us! We will respond within 24 hours.');
+                document.getElementById('contactForm').reset();
+            }
+
+            return false;
+        }
+
+        // Helper function to show errors
+        function showError(inputId, errorId) {
+            document.getElementById(inputId).classList.add('error');
+            document.getElementById(errorId).classList.add('show');
+        }
+
+        // Add to Cart
+        function addToCart(productName, price) {
+            alert(`${productName} has been added to your cart!\nPrice: $${price.toFixed(2)}`);
+        }
+
+        // Add to Wishlist
+        function addToWishlist(productName, price) {
+            const wishlistItems = document.getElementById('wishlistItems');
+            // Remove empty state if it exists
+            const emptyState = wishlistItems.querySelector('.empty-state');
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            // Create wishlist item
+            const item = document.createElement('div');
+            item.className = 'list-item';
+            item.innerHTML = `
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100" alt="${productName}" class="item-image">
+                <div class="item-details">
+                    <div class="item-name">${productName}</div>
+                    <div class="item-meta">Added to wishlist</div>
+                </div>
+                <div class="item-price">$${price.toFixed(2)}</div>
+                <div class="item-actions">
+                    <button class="btn-sm" style="background: #667eea; color: white;" onclick="addToCart('${productName}', ${price})">Add to Cart</button>
+                    <button class="btn-sm btn-remove" onclick="this.closest('.list-item').remove();">Remove</button>
+                </div>
+            `;
+            wishlistItems.appendChild(item);
+            alert(`${productName} has been added to your wishlist!`);
+        }
+
+        // Submit Review
+        function submitReview(event) {
+            event.preventDefault();
+            const name = document.getElementById('reviewName').value;
+            const rating = document.getElementById('reviewRating').value;
+            const text = document.getElementById('reviewText').value;
+
+            if (name && rating && text) {
+                alert('Thank you for your review! It will be published after moderation.');
+                document.getElementById('reviewForm').reset();
+            }
+
+            return false;
+        }
+
+        // Submit Report
+        function submitReport(event) {
+            event.preventDefault();
+            const issueType = document.getElementById('issueType').value;
+            const description = document.getElementById('issueDescription').value;
+
+            if (issueType && description) {
+                alert('Your report has been submitted successfully. Our team will investigate and contact you soon.');
+                document.getElementById('reportForm').reset();
+            }
+
+            return false;
+        }
+    </script>
+</body>
+</html>
